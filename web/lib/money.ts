@@ -28,20 +28,20 @@ export function formatMoney(amount: number, currency: string, opts: { exact?: bo
   const digits = minorUnits(currency);
   const rounded = roundTo(amount, digits);
   const whole = Number.isInteger(rounded);
-  const f = formatter(currency, opts.exact || !whole ? digits : 0);
-  const out = f.format(Math.abs(rounded) < Number.EPSILON ? 0 : rounded);
-  return out;
+  return formatter(currency, opts.exact || !whole ? digits : 0).format(Math.abs(rounded) < Number.EPSILON ? 0 : rounded);
 }
 
-/** Compact form for chart axes: "$1.2k". */
+/**
+ * Compact form for chart axes: "$1.2k". Built by hand rather than with
+ * Intl's compact notation, whose output differs between Node and browsers
+ * (and would cause hydration mismatches).
+ */
 export function formatMoneyCompact(amount: number, currency: string): string {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency,
-    currencyDisplay: "narrowSymbol",
-    notation: "compact",
-    maximumFractionDigits: 1,
-  }).format(amount);
+  const abs = Math.abs(amount);
+  const [divisor, suffix] = abs >= 1e6 ? [1e6, "M"] : abs >= 1e3 ? [1e3, "k"] : [1, ""];
+  const scaled = roundTo(amount / divisor, suffix ? 1 : 2);
+  const digits = Number.isInteger(scaled) ? 0 : suffix ? 1 : 2;
+  return formatter(currency, digits).format(scaled) + suffix;
 }
 
 export function roundTo(amount: number, digits: number): number {

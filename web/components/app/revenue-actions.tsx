@@ -1,15 +1,14 @@
 "use client";
 
-import { useActionState, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { deleteRevenueAction } from "@/app/actions/revenue";
 import { RevenueForm } from "@/components/forms/revenue-form";
-import { useActionFeedback } from "@/components/forms/use-action-feedback";
+import { useFormAction } from "@/components/forms/use-action-feedback";
 import { MoreIcon, PlusIcon } from "@/components/icons";
 import { Button, type ButtonSize, type ButtonVariant } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Menu } from "@/components/ui/menu";
 import { Spinner } from "@/components/ui/spinner";
-import { idle } from "@/lib/action-state";
 import type { Revenue } from "@/types/database";
 
 export function AddRevenueButton({
@@ -44,9 +43,8 @@ export function AddRevenueButton({
 export function RevenueActions({ entry, productCurrency, today, sources }: { entry: Revenue; productCurrency: string; today: string; sources: string[] }) {
   const [editing, setEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [deleteState, deleteAction] = useActionState(deleteRevenueAction, idle);
+  const [, deleteAction] = useFormAction(deleteRevenueAction, () => setConfirmDelete(false), { toastErrors: true });
   const [pending, startTransition] = useTransition();
-  useActionFeedback(deleteState, () => setConfirmDelete(false), { toastErrors: true });
 
   const remove = () => {
     const fd = new FormData();

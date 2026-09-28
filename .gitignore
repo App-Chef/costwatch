@@ -1,0 +1,15 @@
+# Environment — never commit secrets
+.env
+.env.*
+!.env.example
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Supabase CLI local state
+supabase/.branches
+supabase/.temp

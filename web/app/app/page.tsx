@@ -144,6 +144,7 @@ function Kpis({ summary, currency }: { summary: DashboardSummary; currency: stri
       <Stat
         label="Estimated profit"
         emphasis
+        valueText={formatMoney(profit.profit, currency)}
         value={<span className={loss ? "text-loss" : undefined}>{formatMoney(profit.profit, currency)}</span>}
         sub={loss ? <Badge tone="loss">Loss this month</Badge> : "Revenue minus monthly costs"}
       />

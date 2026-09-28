@@ -1,27 +1,32 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { useToast } from "@/components/ui/toast";
-import type { ActionState } from "@/lib/action-state";
+import { idle, type ActionState } from "@/lib/action-state";
 
-/** Toasts the result of a form action once, and runs `onSuccess`. */
-export function useActionFeedback(state: ActionState, onSuccess?: () => void, opts: { toastErrors?: boolean } = {}) {
+type ServerAction = (prev: ActionState, formData: FormData) => Promise<ActionState>;
+
+/**
+ * `useActionState` plus feedback: toasts the result and runs `onSuccess`.
+ * Feedback fires as soon as the action resolves (not in an effect), so it
+ * still shows when the form unmounts in the same render — e.g. an empty
+ * state that disappears once the first item is added.
+ */
+export function useFormAction(action: ServerAction, onSuccess?: () => void, opts: { toastErrors?: boolean } = {}) {
   const toast = useToast();
-  const seen = useRef<number | undefined>(undefined);
   const callback = useRef(onSuccess);
-
   useEffect(() => {
     callback.current = onSuccess;
-  }, [onSuccess]);
+  });
 
-  useEffect(() => {
-    if (!state.at || state.at === seen.current) return;
-    seen.current = state.at;
-    if (state.status === "success") {
-      if (state.message) toast(state.message);
+  return useActionState(async (prev: ActionState, formData: FormData) => {
+    const result = await action(prev, formData);
+    if (result.status === "success") {
+      if (result.message) toast(result.message);
       callback.current?.();
-    } else if (state.status === "error" && opts.toastErrors && state.message) {
-      toast(state.message, "error");
+    } else if (result.status === "error" && opts.toastErrors && result.message) {
+      toast(result.message, "error");
     }
-  }, [state, toast, opts.toastErrors]);
+    return result;
+  }, idle);
 }

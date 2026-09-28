@@ -1,0 +1,23 @@
+name: Feature request
+description: Suggest an improvement.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Costwatch deliberately stays small: it answers "how much does my product actually cost?".
+        Accounting, invoicing, taxes, bank syncing and forecasting are out of scope.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like to see?
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you've considered

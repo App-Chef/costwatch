@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { DeletedNotice } from "@/components/marketing/deleted-notice";
 import { DashboardPreview } from "@/components/marketing/dashboard-preview";
+import { HeroReceipt } from "@/components/marketing/hero-receipt";
 import { CostsIcon, GithubIcon, RenewalsIcon, RevenueIcon, OverviewIcon } from "@/components/icons";
 import { buttonClass } from "@/components/ui/button";
 import { GITHUB_URL } from "@/lib/constants";
@@ -54,7 +55,7 @@ export default function HomePage() {
       </Suspense>
 
       {/* Hero */}
-      <section className="mx-auto max-w-6xl px-4 pt-16 pb-12 sm:px-6 sm:pt-24">
+      <section className="mx-auto grid max-w-6xl items-center gap-12 px-4 pt-16 pb-16 sm:px-6 sm:pt-24 lg:grid-cols-[1fr_22rem] lg:gap-16">
         <div className="max-w-3xl">
           <p className="mb-5 inline-flex items-center gap-2 rounded-sm border border-line bg-card px-2.5 py-1 text-xs font-semibold">
             <span className="size-1.5 rounded-full bg-accent" aria-hidden="true" />
@@ -80,6 +81,7 @@ export default function HomePage() {
           </div>
           <p className="mt-6 text-sm text-muted">Stop guessing what your side project costs every month.</p>
         </div>
+        <HeroReceipt />
       </section>
 
       {/* Dashboard preview */}

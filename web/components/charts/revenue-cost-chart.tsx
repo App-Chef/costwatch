@@ -9,7 +9,7 @@ import { useWidth } from "./use-width";
 export type RevenueCostPoint = { month: string; revenue: number; costs: number };
 
 const HEIGHT = 220;
-const PAD = { top: 16, right: 8, bottom: 28, left: 52 };
+const PAD_BASE = { top: 16, right: 8, bottom: 28 };
 
 export function RevenueCostChart({ data, currency }: { data: RevenueCostPoint[]; currency: string }) {
   const [ref, width] = useWidth<HTMLDivElement>();
@@ -17,13 +17,16 @@ export function RevenueCostChart({ data, currency }: { data: RevenueCostPoint[];
   const [asTable, setAsTable] = useState(false);
   const tableId = useId();
 
+  const { max, step } = niceScale(Math.max(...data.flatMap((d) => [d.revenue, d.costs]), 0));
+  const ticks = Array.from({ length: Math.round(max / step) + 1 }, (_, i) => i * step);
+  // Axis labels are 11px mono (~6.7px per character); leave room for the longest.
+  const labelWidth = Math.max(...ticks.map((t) => formatMoneyCompact(t, currency).length)) * 6.7;
+  const PAD = { ...PAD_BASE, left: Math.ceil(labelWidth + 14) };
   const plotW = Math.max(width - PAD.left - PAD.right, 100);
   const plotH = HEIGHT - PAD.top - PAD.bottom;
-  const { max, step } = niceScale(Math.max(...data.flatMap((d) => [d.revenue, d.costs]), 0));
   const y = (v: number) => PAD.top + plotH - (v / max) * plotH;
   const group = plotW / data.length;
   const barW = Math.max(6, Math.min(26, group * 0.3));
-  const ticks = Array.from({ length: Math.round(max / step) + 1 }, (_, i) => i * step);
   const last = data.length - 1;
 
   const tooltip = active !== null ? data[active] : null;

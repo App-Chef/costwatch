@@ -1,13 +1,12 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useState } from "react";
 import { saveRevenueAction } from "@/app/actions/revenue";
 import { describedBy, Field, FormMessage, Input, Select, Textarea } from "@/components/ui/field";
 import { SubmitButton } from "@/components/ui/submit-button";
-import { idle } from "@/lib/action-state";
 import { CURRENCIES } from "@/lib/constants";
 import type { Revenue } from "@/types/database";
-import { useActionFeedback } from "./use-action-feedback";
+import { useFormAction } from "./use-action-feedback";
 
 export function RevenueForm({
   entry,
@@ -22,8 +21,7 @@ export function RevenueForm({
   sources: string[];
   onDone?: () => void;
 }) {
-  const [state, action] = useActionState(saveRevenueAction, idle);
-  useActionFeedback(state, onDone);
+  const [state, action] = useFormAction(saveRevenueAction, onDone);
   const v = state.values;
   const e = state.fieldErrors ?? {};
   const [currency, setCurrency] = useState(v?.currency ?? entry?.currency ?? productCurrency);

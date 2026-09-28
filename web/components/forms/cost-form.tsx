@@ -1,15 +1,14 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useState } from "react";
 import { saveCostAction } from "@/app/actions/costs";
 import { describedBy, Field, FormMessage, Input, Select, Textarea } from "@/components/ui/field";
 import { SubmitButton } from "@/components/ui/submit-button";
-import { idle } from "@/lib/action-state";
 import { monthlyEquivalent } from "@/lib/calc";
 import { BILLING_CYCLES, CATEGORIES, COST_STATUSES, CURRENCIES, INTERVAL_UNITS } from "@/lib/constants";
 import { formatMoney } from "@/lib/money";
 import type { BillingCycle, Cost, IntervalUnit } from "@/types/database";
-import { useActionFeedback } from "./use-action-feedback";
+import { useFormAction } from "./use-action-feedback";
 
 const PROVIDERS = ["Vercel", "Supabase", "Cloudflare", "GitHub", "OpenAI", "Resend", "AWS", "DigitalOcean", "Figma", "Google", "Netlify", "Stripe", "Hetzner", "Fly.io", "Railway", "Anthropic", "Postmark", "Namecheap"];
 
@@ -24,8 +23,7 @@ export function CostForm({
   today: string;
   onDone?: () => void;
 }) {
-  const [state, action] = useActionState(saveCostAction, idle);
-  useActionFeedback(state, onDone);
+  const [state, action] = useFormAction(saveCostAction, onDone);
   const v = state.values;
   const e = state.fieldErrors ?? {};
 

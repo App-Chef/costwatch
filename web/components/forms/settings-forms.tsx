@@ -1,18 +1,16 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useState } from "react";
 import { deleteAccountAction, updateProfileAction } from "@/app/actions/account";
 import { deleteProductAction } from "@/app/actions/products";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { describedBy, Field, FormMessage, Input } from "@/components/ui/field";
 import { SubmitButton } from "@/components/ui/submit-button";
-import { idle } from "@/lib/action-state";
-import { useActionFeedback } from "./use-action-feedback";
+import { useFormAction } from "./use-action-feedback";
 
 export function ProfileForm({ name }: { name: string | null }) {
-  const [state, action] = useActionState(updateProfileAction, idle);
-  useActionFeedback(state);
+  const [state, action] = useFormAction(updateProfileAction);
   const e = state.fieldErrors ?? {};
   return (
     <form action={action} className="flex flex-col gap-4 sm:flex-row sm:items-end" noValidate>
@@ -28,7 +26,7 @@ export function ProfileForm({ name }: { name: string | null }) {
 
 export function DeleteProductButton({ id, name }: { id: string; name: string }) {
   const [open, setOpen] = useState(false);
-  const [state, action] = useActionState(deleteProductAction, idle);
+  const [state, action] = useFormAction(deleteProductAction);
   return (
     <>
       <Button variant="danger" onClick={() => setOpen(true)}>
@@ -60,7 +58,7 @@ export function DeleteProductButton({ id, name }: { id: string; name: string }) 
 
 export function DeleteAccountButton() {
   const [open, setOpen] = useState(false);
-  const [state, action] = useActionState(deleteAccountAction, idle);
+  const [state, action] = useFormAction(deleteAccountAction);
   return (
     <>
       <Button variant="danger" onClick={() => setOpen(true)}>

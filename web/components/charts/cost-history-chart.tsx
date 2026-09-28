@@ -7,18 +7,21 @@ import { niceScale } from "./scale";
 import { useWidth } from "./use-width";
 
 const HEIGHT = 200;
-const PAD = { top: 16, right: 16, bottom: 28, left: 52 };
+const PAD_BASE = { top: 16, right: 16, bottom: 28 };
 
 export function CostHistoryChart({ data, currency }: { data: { month: string; value: number }[]; currency: string }) {
   const [ref, width] = useWidth<HTMLDivElement>();
   const [active, setActive] = useState<number | null>(null);
 
+  const { max, step } = niceScale(Math.max(...data.map((d) => d.value), 0));
+  const ticks = Array.from({ length: Math.round(max / step) + 1 }, (_, i) => i * step);
+  // Axis labels are 11px mono (~6.7px per character); leave room for the longest.
+  const labelWidth = Math.max(...ticks.map((t) => formatMoneyCompact(t, currency).length)) * 6.7;
+  const PAD = { ...PAD_BASE, left: Math.ceil(labelWidth + 14) };
   const plotW = Math.max(width - PAD.left - PAD.right, 100);
   const plotH = HEIGHT - PAD.top - PAD.bottom;
-  const { max, step } = niceScale(Math.max(...data.map((d) => d.value), 0));
   const x = (i: number) => PAD.left + (data.length === 1 ? plotW / 2 : (plotW * i) / (data.length - 1));
   const y = (v: number) => PAD.top + plotH - (v / max) * plotH;
-  const ticks = Array.from({ length: Math.round(max / step) + 1 }, (_, i) => i * step);
 
   const line = data.map((d, i) => `${i === 0 ? "M" : "L"}${x(i)},${y(d.value)}`).join("");
   const area = `${line}L${x(data.length - 1)},${y(0)}L${x(0)},${y(0)}Z`;

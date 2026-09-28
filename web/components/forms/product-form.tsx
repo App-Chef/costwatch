@@ -1,17 +1,14 @@
 "use client";
 
-import { useActionState } from "react";
 import { createProductAction, updateProductAction } from "@/app/actions/products";
 import { describedBy, Field, FormMessage, Input, Select, Textarea } from "@/components/ui/field";
 import { SubmitButton } from "@/components/ui/submit-button";
-import { idle } from "@/lib/action-state";
 import { CURRENCIES } from "@/lib/constants";
 import type { Product } from "@/types/database";
-import { useActionFeedback } from "./use-action-feedback";
+import { useFormAction } from "./use-action-feedback";
 
 export function ProductForm({ product, onDone, submitLabel }: { product?: Product; onDone?: () => void; submitLabel?: string }) {
-  const [state, action] = useActionState(product ? updateProductAction : createProductAction, idle);
-  useActionFeedback(state, onDone);
+  const [state, action] = useFormAction(product ? updateProductAction : createProductAction, onDone);
   const v = state.values;
   const e = state.fieldErrors ?? {};
 

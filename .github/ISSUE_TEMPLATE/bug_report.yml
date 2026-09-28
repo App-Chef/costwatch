@@ -1,0 +1,42 @@
+name: Bug report
+description: Something in Costwatch isn't working as expected.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. **Please don't include real financial data, emails or keys.**
+        Security issues: see SECURITY.md instead of opening an issue.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to Costs
+        2. Add a yearly cost of 120
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+  - type: dropdown
+    id: hosting
+    attributes:
+      label: Where are you running Costwatch?
+      options:
+        - Local development
+        - Self-hosted (Vercel or similar)
+        - Other
+  - type: textarea
+    id: env
+    attributes:
+      label: Browser / OS

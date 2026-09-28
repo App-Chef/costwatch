@@ -126,3 +126,68 @@ input[type="number"]::-webkit-outer-spin-button {
 .hatch {
   background-image: repeating-linear-gradient(135deg, currentColor 0 1px, transparent 1px 6px);
 }
+
+/*
+ * Hero receipt: paper feeds out of the slot with a slight mechanical stutter,
+ * lines print in sequence, the total counts up, then the stamp lands.
+ */
+@property --receipt-n {
+  syntax: "<integer>";
+  inherits: false;
+  initial-value: 0;
+}
+
+.receipt-feed {
+  animation: receipt-feed 1.6s steps(14, end) both;
+}
+.receipt-edge {
+  /* Torn zig-zag bottom edge. */
+  --tooth: 8px;
+  mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - var(--tooth)) no-repeat,
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--tooth) * 2) var(--tooth) repeat-x;
+}
+.receipt-line {
+  animation: receipt-print 260ms var(--ease-out-soft) both;
+}
+.receipt-total {
+  --receipt-n: var(--to);
+  counter-reset: receipt var(--receipt-n);
+  animation: receipt-count 900ms var(--ease-out-soft) both;
+}
+.receipt-total::after {
+  content: "$" counter(receipt) attr(data-cents);
+}
+.receipt-stamp {
+  transform: rotate(-12deg);
+  animation: receipt-stamp 380ms cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+.receipt-led {
+  animation: pulse-soft 0.5s ease-in-out 5 both;
+}
+
+@keyframes receipt-feed {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+@keyframes receipt-print {
+  from { opacity: 0; clip-path: inset(0 100% 0 0); }
+  to { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+@keyframes receipt-count {
+  from { --receipt-n: 0; }
+}
+@keyframes receipt-stamp {
+  0% { opacity: 0; transform: rotate(-4deg) scale(2.2); }
+  100% { opacity: 1; transform: rotate(-12deg) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .receipt-feed,
+  .receipt-line,
+  .receipt-total,
+  .receipt-stamp,
+  .receipt-led {
+    animation-delay: 0ms !important;
+  }
+}

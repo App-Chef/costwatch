@@ -1,15 +1,14 @@
 "use client";
 
-import { useActionState, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { deleteCostAction, setCostStatusAction } from "@/app/actions/costs";
 import { CostForm } from "@/components/forms/cost-form";
-import { useActionFeedback } from "@/components/forms/use-action-feedback";
+import { useFormAction } from "@/components/forms/use-action-feedback";
 import { MoreIcon, PlusIcon } from "@/components/icons";
 import { Button, type ButtonSize, type ButtonVariant } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Menu } from "@/components/ui/menu";
 import { Spinner } from "@/components/ui/spinner";
-import { idle } from "@/lib/action-state";
 import type { Cost } from "@/types/database";
 
 export function AddCostButton({
@@ -42,11 +41,9 @@ export function AddCostButton({
 export function CostActions({ cost, productCurrency, today }: { cost: Cost; productCurrency: string; today: string }) {
   const [editing, setEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [statusState, statusAction] = useActionState(setCostStatusAction, idle);
-  const [deleteState, deleteAction] = useActionState(deleteCostAction, idle);
+  const [, statusAction] = useFormAction(setCostStatusAction, undefined, { toastErrors: true });
+  const [, deleteAction] = useFormAction(deleteCostAction, () => setConfirmDelete(false), { toastErrors: true });
   const [pending, startTransition] = useTransition();
-  useActionFeedback(statusState, undefined, { toastErrors: true });
-  useActionFeedback(deleteState, () => setConfirmDelete(false), { toastErrors: true });
 
   const run = (action: (fd: FormData) => void, fields: Record<string, string>) => {
     const fd = new FormData();
