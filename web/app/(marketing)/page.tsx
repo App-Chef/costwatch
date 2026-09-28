@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
+import { DeletedNotice } from "@/components/marketing/deleted-notice";
 import { DashboardPreview } from "@/components/marketing/dashboard-preview";
 import { CostsIcon, GithubIcon, RenewalsIcon, RevenueIcon, OverviewIcon } from "@/components/icons";
 import { buttonClass } from "@/components/ui/button";
@@ -44,16 +46,12 @@ const FEATURES = [
   },
 ];
 
-export default async function HomePage({ searchParams }: PageProps<"/">) {
-  const { deleted } = await searchParams;
-
+export default function HomePage() {
   return (
     <>
-      {deleted === "1" && (
-        <div role="status" className="border-b border-line bg-gain-soft px-4 py-3 text-center text-sm font-medium text-gain">
-          Your account and all of its data were deleted.
-        </div>
-      )}
+      <Suspense fallback={null}>
+        <DeletedNotice />
+      </Suspense>
 
       {/* Hero */}
       <section className="mx-auto max-w-6xl px-4 pt-16 pb-12 sm:px-6 sm:pt-24">
