@@ -20,3 +20,11 @@ describe("money", () => {
     expect(sumMoney([900.1, 339.9])).toBe(1240);
   });
 });
+
+import { toCsv } from "@/lib/csv";
+
+describe("toCsv", () => {
+  it("quotes and neutralises spreadsheet formulas", () => {
+    expect(toCsv([["a,b", 'say "hi"', null, 5, "=SUM(A1)"]])).toBe(`"a,b","say ""hi""",,5,'=SUM(A1)`);
+  });
+});
