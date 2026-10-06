@@ -27,7 +27,7 @@
     "eslint-config-next": "16.3.6",
     "schema-dts": "^2.1.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^7"
   },
   "engines": {
     "node": ">=20.9"
