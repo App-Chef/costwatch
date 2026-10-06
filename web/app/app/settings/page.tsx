@@ -1,9 +1,8 @@
 import { redirect } from "next/navigation";
-import { signOutAction } from "@/app/actions/account";
 import { PageHeader } from "@/components/app/page-header";
 import { ProductForm } from "@/components/forms/product-form";
 import { DeleteAccountButton, DeleteProductButton, ProfileForm } from "@/components/forms/settings-forms";
-import { LogoutIcon } from "@/components/icons";
+import { SignOutButton } from "@/components/sign-out-button";
 import { Button, buttonClass } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { getActiveProduct } from "@/lib/data/products";
@@ -42,12 +41,7 @@ export default async function SettingsPage() {
           <CardHeader title="Account" description={profile?.email ?? undefined} />
           <div className="flex flex-col gap-5 p-5">
             <ProfileForm name={profile?.name ?? null} />
-            <form action={signOutAction}>
-              <Button type="submit" variant="ghost" className="-ml-2">
-                <LogoutIcon size={16} />
-                Sign out
-              </Button>
-            </form>
+            <SignOutButton variant="ghost" className="-ml-2" />
           </div>
         </Card>
 

@@ -17,13 +17,17 @@ function isActive(pathname: string, href: string) {
   return href === "/app" ? pathname === "/app" : pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function SidebarNav() {
+export function SidebarNav({ hasProducts = true }: { hasProducts?: boolean }) {
   const pathname = usePathname();
   return (
     <nav aria-label="Main">
       <ul className="flex flex-col gap-1">
         {NAV.map(({ href, label, icon: Icon }) => {
           const active = isActive(pathname, href);
+          // Hide non-Overview and non-Settings links when user has no products
+          if (!hasProducts && href !== "/app" && href !== "/app/settings") {
+            return null;
+          }
           return (
             <li key={href}>
               <Link
@@ -45,13 +49,17 @@ export function SidebarNav() {
   );
 }
 
-export function BottomNav() {
+export function BottomNav({ hasProducts = true }: { hasProducts?: boolean }) {
   const pathname = usePathname();
   return (
     <nav aria-label="Main" className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-paper/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-sm lg:hidden">
       <ul className="mx-auto grid max-w-lg grid-cols-5">
         {NAV.map(({ href, label, icon: Icon }) => {
           const active = isActive(pathname, href);
+          // Hide non-Overview and non-Settings links when user has no products
+          if (!hasProducts && href !== "/app" && href !== "/app/settings") {
+            return null;
+          }
           return (
             <li key={href}>
               <Link

@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { signOutAction } from "@/app/actions/account";
 import { BottomNav, SidebarNav } from "@/components/app/nav";
 import { ProductSwitcher } from "@/components/app/product-switcher";
-import { LogoutIcon } from "@/components/icons";
+import { SignOutButton } from "@/components/sign-out-button";
 import { Logo } from "@/components/logo";
 import { TimezoneSync } from "@/components/timezone-sync";
 import { ToastProvider } from "@/components/ui/toast";
@@ -19,6 +18,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const user = await requireUser();
   const [products, active] = await Promise.all([getProducts(), getActiveProduct()]);
   const switcherProducts = products.map(({ id, name, currency }) => ({ id, name, currency }));
+  const hasProducts = products.length > 0;
 
   return (
     <ToastProvider>
@@ -33,20 +33,12 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             <p className="mb-1.5 px-1 text-xs font-semibold tracking-wide text-muted uppercase">Product</p>
             <ProductSwitcher products={switcherProducts} activeId={active?.id ?? null} />
           </div>
-          <SidebarNav />
+          <SidebarNav hasProducts={hasProducts} />
           <div className="mt-auto flex flex-col gap-2 border-t border-hairline pt-4">
             <p className="truncate px-1 text-sm text-muted" title={user.email ?? undefined}>
               {user.email}
             </p>
-            <form action={signOutAction}>
-              <button
-                type="submit"
-                className="flex h-9 w-full items-center gap-2.5 rounded-md px-2 text-sm font-semibold text-ink-2 transition-colors duration-150 hover:bg-card hover:text-ink"
-              >
-                <LogoutIcon size={16} />
-                Sign out
-              </button>
-            </form>
+            <SignOutButton variant="sidebar" />
           </div>
         </aside>
 
@@ -62,7 +54,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           <div className="mx-auto max-w-6xl">{children}</div>
         </main>
       </div>
-      <BottomNav />
+      <BottomNav hasProducts={hasProducts} />
     </ToastProvider>
   );
 }
