@@ -7,7 +7,7 @@ import { GITHUB_URL } from "@/lib/constants";
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="sticky top-0 z-30 border-b border-line bg-paper/90 backdrop-blur-sm">
+      <header className="sticky top-0 z-30 bg-paper/90 backdrop-blur-sm">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
           <Link href="/" aria-label="Costwatch home" className="rounded-md">
             <Logo />

@@ -5,6 +5,7 @@ import { useActionState, useState } from "react";
 import { googleSignInAction, magicLinkAction, requestPasswordResetAction, signInAction, signUpAction, updatePasswordAction } from "@/app/actions/auth";
 import { GoogleIcon } from "@/components/icons";
 import { describedBy, Field, FormMessage, Input } from "@/components/ui/field";
+import { PasswordInput } from "@/components/ui/password-input";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { idle } from "@/lib/action-state";
 
@@ -63,7 +64,7 @@ export function SignInForm({ next, google }: { next: string; google: boolean }) 
         </Field>
         {mode === "password" && (
           <Field label="Password" htmlFor="password" error={e.password}>
-            <Input id="password" name="password" type="password" autoComplete="current-password" required {...describedBy("password", e.password)} />
+            <PasswordInput id="password" name="password" autoComplete="current-password" required {...describedBy("password", e.password)} />
           </Field>
         )}
         <SubmitButton size="lg" className="mt-1 w-full" pendingLabel={mode === "password" ? "Signing in…" : "Sending link…"}>
@@ -108,7 +109,7 @@ export function SignUpForm({ google }: { google: boolean }) {
           <Input id="email" name="email" type="email" autoComplete="email" required defaultValue={state.values?.email ?? ""} {...describedBy("email", e.email)} />
         </Field>
         <Field label="Password" htmlFor="password" error={e.password} hint="At least 8 characters.">
-          <Input id="password" name="password" type="password" autoComplete="new-password" required minLength={8} {...describedBy("password", e.password, true)} />
+          <PasswordInput id="password" name="password" autoComplete="new-password" required minLength={8} {...describedBy("password", e.password, true)} />
         </Field>
         <SubmitButton size="lg" className="mt-1 w-full" pendingLabel="Creating account…">
           Create account
@@ -142,7 +143,7 @@ export function UpdatePasswordForm() {
     <form action={action} className="flex flex-col gap-4" noValidate>
       {state.status === "error" && state.message && !state.fieldErrors && <FormMessage>{state.message}</FormMessage>}
       <Field label="New password" htmlFor="password" error={e.password} hint="At least 8 characters.">
-        <Input id="password" name="password" type="password" autoComplete="new-password" required minLength={8} {...describedBy("password", e.password, true)} />
+        <PasswordInput id="password" name="password" autoComplete="new-password" required minLength={8} {...describedBy("password", e.password, true)} />
       </Field>
       <SubmitButton size="lg" className="w-full" pendingLabel="Saving…">
         Save new password

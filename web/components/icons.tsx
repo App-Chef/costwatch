@@ -147,3 +147,17 @@ export const GoogleIcon = ({ size = 18, ...p }: IconProps) => (
     <path fill="#EA4335" d="M12 5.38c1.61 0 3.06.55 4.2 1.64l3.14-3.14C17.44 2.1 14.96 1 12 1 7.7 1 3.99 3.47 2.2 7.04l3.66 2.84C6.72 7.3 9.14 5.38 12 5.38Z" />
   </svg>
 );
+
+export const EyeIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+    <circle cx="12" cy="12" r="3" />
+  </Icon>
+);
+
+export const EyeOffIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+    <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61M2 2l20 20" />
+  </Icon>
+);
