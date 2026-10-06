@@ -1,11 +1,26 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { GITHUB_URL } from "@/lib/constants";
+import { Breadcrumbs } from "@/components/seo/breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Self-hosting guide",
-  description: "Run Costwatch on your own Supabase project: setup, environment variables, authentication and deployment.",
+  description: "Run Costwatch on your own Supabase project: setup, environment variables, authentication and deployment. Complete guide for self-hosting open source cost tracking.",
   alternates: { canonical: "/docs" },
+  openGraph: {
+    title: "Self-hosting guide | Costwatch",
+    description: "Run Costwatch on your own Supabase project: setup, environment variables, authentication and deployment.",
+    type: "article",
+    url: "/docs",
+  },
+  keywords: [
+    "self-hosting",
+    "supabase setup",
+    "next.js deployment",
+    "cost tracking setup",
+    "installation guide",
+    "docker deployment",
+  ],
 };
 
 const SECTIONS = [
@@ -64,6 +79,7 @@ export default function DocsPage() {
       </aside>
 
       <article className="max-w-3xl">
+        <Breadcrumbs items={[{ label: "Documentation", href: "/docs" }]} />
         <p className="text-sm font-semibold text-accent-ink">Documentation</p>
         <h1 className="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">Self-hosting guide</h1>
         <p className="mt-4 text-lg text-ink-2">
