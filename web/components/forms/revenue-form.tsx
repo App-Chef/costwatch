@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { saveRevenueAction } from "@/app/actions/revenue";
-import { describedBy, Field, FormMessage, Input, Select, Textarea } from "@/components/ui/field";
+import { describedBy, Field, FormMessage, Input, Textarea } from "@/components/ui/field";
+import { CustomSelect } from "@/components/ui/custom-select";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { CURRENCIES } from "@/lib/constants";
 import type { Revenue } from "@/types/database";
@@ -46,13 +47,16 @@ export function RevenueForm({
           />
         </Field>
         <Field label="Currency" htmlFor="rev-currency" error={e.currency}>
-          <Select id="rev-currency" name="currency" value={currency} onChange={(ev) => setCurrency(ev.target.value)}>
-            {CURRENCIES.map((c) => (
-              <option key={c.code} value={c.code}>
-                {c.code}
-              </option>
-            ))}
-          </Select>
+          <CustomSelect
+            id="rev-currency"
+            name="currency"
+            value={currency}
+            onChange={(value) => setCurrency(value)}
+            options={CURRENCIES.map((c) => ({
+              value: c.code,
+              label: c.code,
+            }))}
+          />
         </Field>
       </div>
 

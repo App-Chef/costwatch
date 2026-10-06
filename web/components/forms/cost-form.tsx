@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { saveCostAction } from "@/app/actions/costs";
-import { describedBy, Field, FormMessage, Input, Select, Textarea } from "@/components/ui/field";
+import { describedBy, Field, FormMessage, Input, Textarea } from "@/components/ui/field";
+import { CustomSelect } from "@/components/ui/custom-select";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { monthlyEquivalent } from "@/lib/calc";
 import { BILLING_CYCLES, CATEGORIES, COST_STATUSES, CURRENCIES, INTERVAL_UNITS } from "@/lib/constants";
@@ -99,22 +100,28 @@ export function CostForm({
           />
         </Field>
         <Field label="Currency" htmlFor="cost-currency" error={e.currency}>
-          <Select id="cost-currency" name="currency" value={currency} onChange={(ev) => setCurrency(ev.target.value)}>
-            {CURRENCIES.map((c) => (
-              <option key={c.code} value={c.code}>
-                {c.code}
-              </option>
-            ))}
-          </Select>
+          <CustomSelect
+            id="cost-currency"
+            name="currency"
+            value={currency}
+            onChange={(value) => setCurrency(value)}
+            options={CURRENCIES.map((c) => ({
+              value: c.code,
+              label: c.code,
+            }))}
+          />
         </Field>
         <Field label="Billing" htmlFor="cost-cycle" error={e.billing_cycle} className="col-span-2 sm:col-span-1">
-          <Select id="cost-cycle" name="billing_cycle" value={cycle} onChange={(ev) => setCycle(ev.target.value as BillingCycle)}>
-            {BILLING_CYCLES.map((b) => (
-              <option key={b.value} value={b.value}>
-                {b.label}
-              </option>
-            ))}
-          </Select>
+          <CustomSelect
+            id="cost-cycle"
+            name="billing_cycle"
+            value={cycle}
+            onChange={(value) => setCycle(value as BillingCycle)}
+            options={BILLING_CYCLES.map((b) => ({
+              value: b.value,
+              label: b.label,
+            }))}
+          />
         </Field>
       </div>
 
@@ -147,13 +154,16 @@ export function CostForm({
               <label htmlFor="cost-interval-unit" className="sr-only">
                 Unit
               </label>
-              <Select id="cost-interval-unit" name="custom_interval_unit" value={unit} onChange={(ev) => setUnit(ev.target.value as IntervalUnit)}>
-                {INTERVAL_UNITS.map((u) => (
-                  <option key={u.value} value={u.value}>
-                    {u.plural}
-                  </option>
-                ))}
-              </Select>
+              <CustomSelect
+                id="cost-interval-unit"
+                name="custom_interval_unit"
+                value={unit}
+                onChange={(value) => setUnit(value as IntervalUnit)}
+                options={INTERVAL_UNITS.map((u) => ({
+                  value: u.value,
+                  label: u.plural,
+                }))}
+              />
             </div>
           </div>
           {(e.custom_interval_count || e.custom_interval_unit) && (
@@ -172,13 +182,15 @@ export function CostForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Category" htmlFor="cost-category" error={e.category}>
-          <Select id="cost-category" name="category" defaultValue={v?.category ?? cost?.category ?? "hosting"}>
-            {CATEGORIES.map((c) => (
-              <option key={c.slug} value={c.slug}>
-                {c.name}
-              </option>
-            ))}
-          </Select>
+          <CustomSelect
+            id="cost-category"
+            name="category"
+            defaultValue={v?.category ?? cost?.category ?? "hosting"}
+            options={CATEGORIES.map((c) => ({
+              value: c.slug,
+              label: c.name,
+            }))}
+          />
         </Field>
 
         {oneTime ? (
@@ -192,10 +204,10 @@ export function CostForm({
         )}
       </div>
 
-      <details className="group rounded-md border border-hairline" open={Boolean(e.description || e.start_date || cost?.description)}>
-        <summary className="flex cursor-pointer list-none items-center justify-between px-3.5 py-2.5 text-sm font-semibold select-none [&::-webkit-details-marker]:hidden">
+      <details className="group rounded-md border border-hairline transition-shadow duration-150 ease-out hover:shadow-[1px_1px_0_0_var(--color-hairline)]" open={Boolean(e.description || e.start_date || cost?.description)}>
+        <summary className="flex cursor-pointer list-none items-center justify-between px-3.5 py-2.5 text-sm font-semibold select-none transition-colors duration-150 ease-out hover:bg-sunken [&::-webkit-details-marker]:hidden">
           More details
-          <span className="text-muted transition-transform duration-150 group-open:rotate-45" aria-hidden="true">
+          <span className="text-muted transition-transform duration-150 ease-out group-open:rotate-45" aria-hidden="true">
             +
           </span>
         </summary>
@@ -207,13 +219,16 @@ export function CostForm({
           )}
           {cost && (
             <Field label="Status" htmlFor="cost-status" hint="Paused and inactive costs are not counted in monthly totals.">
-              <Select id="cost-status" name="status" defaultValue={v?.status ?? cost.status} {...describedBy("cost-status", undefined, true)}>
-                {COST_STATUSES.map((s) => (
-                  <option key={s.value} value={s.value}>
-                    {s.label}
-                  </option>
-                ))}
-              </Select>
+              <CustomSelect
+                id="cost-status"
+                name="status"
+                defaultValue={v?.status ?? cost.status}
+                options={COST_STATUSES.map((s) => ({
+                  value: s.value,
+                  label: s.label,
+                }))}
+                {...describedBy("cost-status", undefined, true)}
+              />
             </Field>
           )}
           <Field label="Notes" htmlFor="cost-description" error={e.description} optional>

@@ -103,14 +103,15 @@ export function Menu({
           aria-label={label}
           onKeyDown={onMenuKey}
           className={cn(
-            "absolute z-40 mt-1.5 min-w-48 animate-rise rounded-md border border-line bg-card p-1 shadow-hard",
+            "absolute z-40 mt-1.5 min-w-48 rounded-md border-2 border-line bg-card p-1.5 shadow-hard",
+            "animate-rise origin-top",
             align === "end" ? "right-0" : "left-0",
             menuClassName,
           )}
         >
           {items.map((item) =>
             item.type === "separator" ? (
-              <div key={item.key} role="separator" className="my-1 h-px bg-hairline" />
+              <div key={item.key} role="separator" className="my-1.5 h-px bg-hairline" />
             ) : (
               <button
                 key={item.key}
@@ -123,12 +124,14 @@ export function Menu({
                   item.onSelect();
                 }}
                 className={cn(
-                  "flex w-full items-center gap-2.5 rounded-sm px-2.5 py-2 text-left text-sm font-medium outline-none transition-colors duration-100",
-                  "hover:bg-sunken focus:bg-sunken",
-                  item.tone === "danger" ? "text-loss" : "text-ink",
+                  "flex w-full items-center gap-2.5 rounded-sm px-3 py-2.5 text-left text-sm font-semibold outline-none",
+                  "transition-[background-color,transform,box-shadow] duration-150 ease-out",
+                  "hover:bg-accent-soft hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[1px_1px_0_0_var(--color-line)]",
+                  "focus:bg-accent-soft focus:-translate-x-0.5 focus:-translate-y-0.5 focus:shadow-[1px_1px_0_0_var(--color-line)]",
+                  item.tone === "danger" ? "text-loss hover:bg-loss-soft focus:bg-loss-soft" : "text-ink",
                 )}
               >
-                {item.icon && <span className="shrink-0 text-ink-2">{item.icon}</span>}
+                {item.icon && <span className="shrink-0 text-ink-2 transition-colors duration-150">{item.icon}</span>}
                 <span className="min-w-0 flex-1 truncate">{item.label}</span>
               </button>
             ),

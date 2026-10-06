@@ -1,7 +1,8 @@
 "use client";
 
 import { createProductAction, updateProductAction } from "@/app/actions/products";
-import { describedBy, Field, FormMessage, Input, Select, Textarea } from "@/components/ui/field";
+import { describedBy, Field, FormMessage, Input, Textarea } from "@/components/ui/field";
+import { CustomSelect } from "@/components/ui/custom-select";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { CURRENCIES } from "@/lib/constants";
 import type { Product } from "@/types/database";
@@ -37,18 +38,16 @@ export function ProductForm({ product, onDone, submitLabel }: { product?: Produc
         error={e.currency}
         hint="Totals are calculated in this currency. Costwatch never converts between currencies."
       >
-        <Select
+        <CustomSelect
           id="product-currency"
           name="currency"
           defaultValue={v?.currency ?? product?.currency ?? "USD"}
+          options={CURRENCIES.map((c) => ({
+            value: c.code,
+            label: `${c.code} — ${c.name}`,
+          }))}
           {...describedBy("product-currency", e.currency, true)}
-        >
-          {CURRENCIES.map((c) => (
-            <option key={c.code} value={c.code}>
-              {c.code} — {c.name}
-            </option>
-          ))}
-        </Select>
+        />
       </Field>
 
       <Field label="Description" htmlFor="product-description" error={e.description} optional>
