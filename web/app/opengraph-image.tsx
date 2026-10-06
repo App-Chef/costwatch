@@ -1,28 +1,104 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Costwatch — Know what your product actually costs";
-export const size = { width: 1200, height: 630 };
+export const runtime = "edge";
+export const alt = "Costwatch - Know what your product actually costs";
+export const size = {
+  width: 1200,
+  height: 630,
+};
 export const contentType = "image/png";
 
-export default function OpengraphImage() {
+export default async function Image() {
   return new ImageResponse(
     (
-      <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", background: "#f6f5f0", padding: 72, fontFamily: "sans-serif", color: "#121212" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-          <div style={{ display: "flex", alignItems: "flex-end", gap: 6, width: 64, height: 64, background: "#121212", borderRadius: 10, padding: "0 12px 12px" }}>
-            <div style={{ width: 10, height: 16, background: "#f6f5f0", borderRadius: 2 }} />
-            <div style={{ width: 10, height: 26, background: "#f6f5f0", borderRadius: 2 }} />
-            <div style={{ width: 10, height: 36, background: "#e8590c", borderRadius: 2 }} />
+      <div
+        style={{
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#f6f5f0",
+          padding: "80px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 72,
+              fontWeight: 900,
+              color: "#1a1a19",
+              lineHeight: 1.1,
+              marginBottom: 30,
+              maxWidth: 900,
+            }}
+          >
+            Know what your product{" "}
+            <span
+              style={{
+                background: "#ff6b35",
+                color: "#1a1a19",
+                padding: "0 20px",
+              }}
+            >
+              actually costs
+            </span>
           </div>
-          <div style={{ fontSize: 40, fontWeight: 800 }}>Costwatch</div>
+          <div
+            style={{
+              fontSize: 32,
+              color: "#55534d",
+              marginBottom: 40,
+              maxWidth: 700,
+            }}
+          >
+            Track your software costs, revenue, renewals, and profit in one place
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 20,
+              fontSize: 24,
+              color: "#8a8782",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              <div
+                style={{
+                  width: 12,
+                  height: 12,
+                  borderRadius: "50%",
+                  background: "#ff6b35",
+                }}
+              />
+              Open Source
+            </div>
+            <div>·</div>
+            <div>Self-Hostable</div>
+            <div>·</div>
+            <div>Private & Secure</div>
+          </div>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-          <div style={{ fontSize: 84, fontWeight: 800, lineHeight: 1.02, letterSpacing: -2 }}>Know what your product actually costs.</div>
-          <div style={{ fontSize: 32, color: "#3d3d3a" }}>Costs, revenue, renewals and profit in one place. Open source.</div>
-        </div>
-        <div style={{ display: "flex", height: 14, background: "#e8590c", border: "3px solid #121212", borderRadius: 4 }} />
       </div>
     ),
-    size,
+    {
+      ...size,
+    }
   );
 }

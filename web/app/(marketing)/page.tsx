@@ -4,14 +4,30 @@ import { Suspense } from "react";
 import { DeletedNotice } from "@/components/marketing/deleted-notice";
 import { DashboardPreview } from "@/components/marketing/dashboard-preview";
 import { HeroReceipt } from "@/components/marketing/hero-receipt";
+import { FAQSection } from "@/components/marketing/faq-section";
 import { CostsIcon, GithubIcon, RenewalsIcon, RevenueIcon, OverviewIcon } from "@/components/icons";
 import { buttonClass } from "@/components/ui/button";
 import { GITHUB_URL } from "@/lib/constants";
+import { WebPageSchema, SoftwareApplicationSchema, FAQSchema } from "@/components/seo/structured-data";
+
+const title = "Costwatch | Know what your product actually costs";
+const description = "Track your product costs, revenue, renewals, and profit in one place. Open source cost management for software products and SaaS businesses. Self-hostable, private, and secure.";
 
 export const metadata: Metadata = {
-  title: { absolute: "Costwatch | Know what your product actually costs" },
-  description: "Track your product costs, revenue, renewals, and profit in one place.",
+  title: { absolute: title },
+  description,
   alternates: { canonical: "/" },
+  openGraph: {
+    title,
+    description,
+    type: "website",
+    url: "/",
+  },
+  twitter: {
+    title,
+    description,
+    card: "summary_large_image",
+  },
 };
 
 const PROBLEM = [
@@ -50,18 +66,22 @@ const FEATURES = [
 export default function HomePage() {
   return (
     <>
+      <WebPageSchema title={title} description={description} />
+      <SoftwareApplicationSchema />
+      <FAQSchema />
+
       <Suspense fallback={null}>
         <DeletedNotice />
       </Suspense>
 
       {/* Hero */}
-      <section className="mx-auto grid max-w-6xl items-center gap-12 px-4 pt-16 pb-16 sm:px-6 sm:pt-24 lg:grid-cols-[1fr_22rem] lg:gap-16">
+      <section aria-labelledby="hero-title" className="mx-auto grid max-w-6xl items-center gap-12 px-4 pt-16 pb-16 sm:px-6 sm:pt-24 lg:grid-cols-[1fr_22rem] lg:gap-16">
         <div className="max-w-3xl">
           <p className="mb-5 inline-flex items-center gap-2 rounded-sm border border-line bg-card px-2.5 py-1 text-xs font-semibold">
             <span className="size-1.5 rounded-full bg-accent" aria-hidden="true" />
             Open source · Self-hostable
           </p>
-          <h1 className="text-[2.75rem] leading-[0.98] font-extrabold tracking-[-0.035em] text-balance sm:text-7xl">
+          <h1 id="hero-title" className="text-[2.75rem] leading-[0.98] font-extrabold tracking-[-0.035em] text-balance sm:text-7xl">
             Know what your product <span className="relative whitespace-nowrap">
               <span className="relative z-10">actually costs.</span>
               <span className="absolute inset-x-0 bottom-[0.08em] -z-0 h-[0.28em] bg-accent/80" aria-hidden="true" />
@@ -90,11 +110,11 @@ export default function HomePage() {
       </section>
 
       {/* Problem */}
-      <section className="border-y border-line bg-card">
+      <section aria-labelledby="problem-title" className="border-y border-line bg-card">
         <div className="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 md:grid-cols-2 md:items-center">
           <div>
             <p className="text-sm font-semibold text-accent-ink">The problem</p>
-            <h2 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">Your product may have:</h2>
+            <h2 id="problem-title" className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">Your product may have:</h2>
             <p className="mt-5 max-w-md text-lg leading-relaxed text-ink-2">
               Individually, they look small. <strong className="text-ink">Together, they become your operating cost.</strong> And
               they&apos;re scattered across a dozen dashboards, invoices and card statements.
@@ -119,10 +139,10 @@ export default function HomePage() {
       </section>
 
       {/* Solution */}
-      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <section aria-labelledby="solution-title" className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
         <div className="max-w-2xl">
           <p className="text-sm font-semibold text-accent-ink">The fix</p>
-          <h2 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">One place for every cost behind your product.</h2>
+          <h2 id="solution-title" className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">One place for every cost behind your product.</h2>
           <p className="mt-5 text-lg leading-relaxed text-ink-2">
             Costwatch brings your hosting, databases, APIs, domains and subscriptions together with the revenue they support. Open your
             dashboard and in a few seconds you know what you&apos;re paying for, what you&apos;re making, and what&apos;s left.
@@ -202,6 +222,9 @@ export default function HomePage() {
           </pre>
         </div>
       </section>
+
+      {/* FAQ */}
+      <FAQSection />
 
       {/* Final CTA */}
       <section className="mx-auto max-w-6xl px-4 py-24 text-center sm:px-6">
