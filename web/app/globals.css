@@ -66,6 +66,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
+  scrollbar-color: var(--color-muted) var(--color-sunken);
+  scrollbar-width: thin;
 }
 
 body {
@@ -74,6 +76,30 @@ body {
   font-family: var(--font-sans);
   font-feature-settings: "ss01";
   -webkit-font-smoothing: antialiased;
+}
+
+* {
+  scrollbar-color: var(--color-muted) var(--color-sunken);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-sunken);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted);
+  border: 2px solid var(--color-sunken);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
 }
 
 ::selection {
